@@ -713,9 +713,18 @@ const capturedImages = document.getElementById('captured-images');
 if (btnStartCamera) {
   btnStartCamera.onclick = async () => {
     try {
+      // Show loading state
+      btnStartCamera.textContent = 'Starting camera...';
+      btnStartCamera.disabled = true;
+      
       await startCamera();
     } catch (e) {
-      alert('Camera access denied or not available: ' + e.message);
+      console.error('Camera error:', e);
+      alert('Camera access denied or not available: ' + e.message + '\n\nYou can still use the "Upload photos" option below.');
+      
+      // Reset button state
+      btnStartCamera.textContent = '📷 Scan with Camera';
+      btnStartCamera.disabled = false;
     }
   };
 }
@@ -740,6 +749,11 @@ if (btnSwitchCamera) {
 
 async function startCamera() {
   try {
+    // Check if getUserMedia is supported
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error('Camera not supported on this device');
+    }
+    
     // Get available cameras
     const devices = await navigator.mediaDevices.enumerateDevices();
     availableCameras = devices.filter(device => device.kind === 'videoinput');
@@ -753,17 +767,24 @@ async function startCamera() {
       currentStream.getTracks().forEach(track => track.stop());
     }
     
-    // Start camera with current index
-    const constraints = {
+    // Mobile-friendly constraints - try back camera first
+    let constraints = {
       video: {
-        deviceId: availableCameras[currentCameraIndex]?.deviceId,
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        facingMode: currentCameraIndex === 0 ? 'environment' : 'user'
+        width: { ideal: 1280, max: 1920 },
+        height: { ideal: 720, max: 1080 },
+        facingMode: 'environment', // Back camera for scanning
+        frameRate: { ideal: 30, max: 60 }
       }
     };
     
-    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    try {
+      currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (backCameraError) {
+      console.log('Back camera failed, trying front camera...');
+      constraints.video.facingMode = 'user';
+      currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    }
+    
     cameraVideo.srcObject = currentStream;
     
     // Show camera interface
@@ -776,9 +797,23 @@ async function startCamera() {
       btnSwitchCamera.style.display = 'inline-block';
     }
     
+    // Handle camera errors
+    cameraVideo.onerror = (e) => {
+      console.error('Video error:', e);
+      alert('Camera error. Please try again.');
+    };
+    
   } catch (e) {
     console.error('Camera error:', e);
-    throw e;
+    let errorMessage = 'Camera access denied or not available.';
+    if (e.name === 'NotAllowedError') {
+      errorMessage = 'Camera permission denied. Please allow camera access and try again.';
+    } else if (e.name === 'NotFoundError') {
+      errorMessage = 'No camera found on this device.';
+    } else if (e.name === 'NotSupportedError') {
+      errorMessage = 'Camera not supported on this device.';
+    }
+    throw new Error(errorMessage);
   }
 }
 
@@ -796,7 +831,10 @@ function stopCamera() {
 }
 
 function captureImage() {
-  if (!currentStream) return;
+  if (!currentStream) {
+    alert('Camera not started. Please start camera first.');
+    return;
+  }
   
   const canvas = cameraCanvas;
   const video = cameraVideo;
@@ -811,10 +849,22 @@ function captureImage() {
   
   // Convert to blob and add to uploaded files
   canvas.toBlob((blob) => {
-    const file = new File([blob], `camera-capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
-    uploadedFiles.push(file);
-    updateFileList();
-    updateCapturedImages();
+    if (blob) {
+      const file = new File([blob], `camera-capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      uploadedFiles.push(file);
+      updateFileList();
+      updateCapturedImages();
+      
+      // Show success feedback
+      const captureBtn = document.getElementById('btn-capture');
+      const originalText = captureBtn.textContent;
+      captureBtn.textContent = '✅ Captured!';
+      setTimeout(() => {
+        captureBtn.textContent = originalText;
+      }, 1000);
+    } else {
+      alert('Failed to capture image. Please try again.');
+    }
   }, 'image/jpeg', 0.9);
 }
 
@@ -954,11 +1004,15 @@ if (btnSmartScan) {
     combinedText = cleanAndEnhanceText(combinedText);
     allResults.combinedText = combinedText;
     
-    // Display results
+    // Display results - clean up the output
     out.textContent += '\n=== SCANNING COMPLETE ===\n\n';
-    out.textContent += 'OCR Results:\n' + (allResults.ocrText || 'No text found') + '\n';
+    
+    // Clean and display OCR results
+    const cleanOcrText = (allResults.ocrText || 'No text found').replace(/<[^>]*>/g, '').trim();
+    out.textContent += 'OCR Results:\n' + cleanOcrText + '\n';
+    
     if (allResults.barcodes.length > 0) {
-      out.textContent += '\nBarcodes Found:\n' + allResults.barcodes.join('\n') + '\n';
+      out.textContent += '\nBarcodes Found: ' + allResults.barcodes.join(', ') + '\n';
     }
     
     // Store barcode data globally for use in parsing
