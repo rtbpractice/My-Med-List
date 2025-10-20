@@ -923,29 +923,70 @@ function checkFocusAndCapture() {
   const now = Date.now();
   if (now - lastCaptureTime < captureCooldown) return;
   
-  // Simple focus detection based on image contrast
+  // Enhanced focus detection
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = 160;
-  canvas.height = 120;
+  canvas.width = 320;
+  canvas.height = 240;
   
   ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
   
-  // Calculate contrast (simplified focus detection)
+  // Calculate multiple focus metrics
   let contrast = 0;
+  let edgeCount = 0;
+  let variance = 0;
+  let mean = 0;
+  
+  // Calculate mean brightness
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
     const g = data[i + 1];
     const b = data[i + 2];
     const brightness = (r + g + b) / 3;
-    contrast += Math.abs(brightness - 128);
+    mean += brightness;
+  }
+  mean = mean / (data.length / 4);
+  
+  // Calculate contrast and variance
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const brightness = (r + g + b) / 3;
+    contrast += Math.abs(brightness - mean);
+    variance += Math.pow(brightness - mean, 2);
   }
   contrast = contrast / (data.length / 4);
+  variance = variance / (data.length / 4);
   
-  // If contrast is high enough (good focus), capture image
-  if (contrast > 25) {
+  // Edge detection for sharpness
+  for (let y = 1; y < canvas.height - 1; y++) {
+    for (let x = 1; x < canvas.width - 1; x++) {
+      const idx = (y * canvas.width + x) * 4;
+      const r = data[idx];
+      const g = data[idx + 1];
+      const b = data[idx + 2];
+      const brightness = (r + g + b) / 3;
+      
+      // Check surrounding pixels for edges
+      const rightIdx = (y * canvas.width + (x + 1)) * 4;
+      const rightBrightness = (data[rightIdx] + data[rightIdx + 1] + data[rightIdx + 2]) / 3;
+      const bottomIdx = ((y + 1) * canvas.width + x) * 4;
+      const bottomBrightness = (data[bottomIdx] + data[bottomIdx + 1] + data[bottomIdx + 2]) / 3;
+      
+      if (Math.abs(brightness - rightBrightness) > 20 || Math.abs(brightness - bottomBrightness) > 20) {
+        edgeCount++;
+      }
+    }
+  }
+  
+  // Focus score combining multiple metrics
+  const focusScore = (contrast * 0.4) + (variance * 0.3) + (edgeCount * 0.3);
+  
+  // More sensitive threshold for better auto-capture
+  if (focusScore > 15) {
     lastCaptureTime = now;
     captureImage();
     
@@ -1066,6 +1107,13 @@ if (btnSmartScan) {
     }
     
     const out = document.getElementById('ocr-output');
+    const statusMsg = document.getElementById('status-message');
+    
+    // Show user-friendly status
+    statusMsg.style.display = 'block';
+    statusMsg.textContent = '🔍 Scanning your images...';
+    
+    // Keep technical output hidden
     out.textContent = '🔍 Smart scanning all images...\n\n';
     
     let allResults = {
@@ -1149,11 +1197,21 @@ if (btnSmartScan) {
     
     if (drugField && drugField.value && drugField.value.length > 3 && 
         strengthField && strengthField.value && strengthField.value.length > 1) {
-      out.textContent += '\n✅ Fields have been auto-filled based on all scanned data.\n';
+      statusMsg.textContent = '✅ Success! Your medication information has been filled in.';
+      statusMsg.style.background = '#d4edda';
+      statusMsg.style.color = '#155724';
+      statusMsg.style.borderColor = '#c3e6cb';
     } else {
-      out.textContent += '\n⚠️ Partial data extracted. Please review and complete manually.\n';
-      out.textContent += 'Tip: Try taking clearer photos or use manual entry.\n';
+      statusMsg.textContent = '⚠️ Some information was found. Please review and complete any missing fields.';
+      statusMsg.style.background = '#fff3cd';
+      statusMsg.style.color = '#856404';
+      statusMsg.style.borderColor = '#ffeaa7';
     }
+    
+    // Hide status message after 5 seconds
+    setTimeout(() => {
+      statusMsg.style.display = 'none';
+    }, 5000);
     } else if (allResults.barcodes.length > 0) {
       // If no OCR text but we have barcodes, try to use barcode data
       out.textContent += '\n=== USING BARCODE DATA ===\n';
