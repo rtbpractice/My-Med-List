@@ -13,6 +13,16 @@ label{display:flex; flex-direction:column; font-size:13px}
 input,textarea{margin-top:6px; padding:10px 12px; border:1px solid #ccc; border-radius:8px}
 button.primary{background:#10b981; color:#fff; border:0; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600}
 button.secondary{background:#6b7280; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:13px}
+button.camera-start{background:#10b981; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.2s ease}
+button.camera-start:hover{background:#059669; transform:translateY(-1px); box-shadow:0 4px 12px rgba(16,185,129,0.4)}
+button.camera-stop{background:#ef4444; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(239,68,68,0.3); transition:all 0.2s ease}
+button.camera-stop:hover{background:#dc2626; transform:translateY(-1px); box-shadow:0 4px 12px rgba(239,68,68,0.4)}
+button.camera-capture{background:#3b82f6; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(59,130,246,0.3); transition:all 0.2s ease}
+button.camera-capture:hover{background:#2563eb; transform:translateY(-1px); box-shadow:0 4px 12px rgba(59,130,246,0.4)}
+button.camera-switch{background:#8b5cf6; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(139,92,246,0.3); transition:all 0.2s ease}
+button.camera-switch:hover{background:#7c3aed; transform:translateY(-1px); box-shadow:0 4px 10px rgba(139,92,246,0.4)}
+button.camera-auto{background:#f59e0b; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(245,158,11,0.3); transition:all 0.2s ease}
+button.camera-auto:hover{background:#d97706; transform:translateY(-1px); box-shadow:0 4px 10px rgba(245,158,11,0.4)}
 button.danger{background:#ef4444; color:#fff; border:0; padding:10px 14px; border-radius:10px; cursor:pointer}
 .hidden{display:none}
 .card{border:1px solid #ddd; border-radius:12px; padding:12px; margin:10px 0; background:#fff}
