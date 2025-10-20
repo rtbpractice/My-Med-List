@@ -698,12 +698,16 @@ function fillFieldsFromBarcode(barcodeData) {
 let currentStream = null;
 let currentCameraIndex = 0;
 let availableCameras = [];
+let autoCaptureEnabled = true;
+let lastCaptureTime = 0;
+let captureCooldown = 2000; // 2 seconds between captures
 
 // Camera elements
 const btnStartCamera = document.getElementById('btn-start-camera');
 const btnStopCamera = document.getElementById('btn-stop-camera');
 const btnCapture = document.getElementById('btn-capture');
 const btnSwitchCamera = document.getElementById('btn-switch-camera');
+const btnToggleAuto = document.getElementById('btn-toggle-auto');
 const cameraPreview = document.getElementById('camera-preview');
 const cameraVideo = document.getElementById('camera-video');
 const cameraCanvas = document.getElementById('camera-canvas');
@@ -744,6 +748,19 @@ if (btnCapture) {
 if (btnSwitchCamera) {
   btnSwitchCamera.onclick = () => {
     switchCamera();
+  };
+}
+
+if (btnToggleAuto) {
+  btnToggleAuto.onclick = () => {
+    autoCaptureEnabled = !autoCaptureEnabled;
+    btnToggleAuto.textContent = autoCaptureEnabled ? '🤖 Auto: ON' : '🤖 Auto: OFF';
+    
+    if (autoCaptureEnabled && currentStream) {
+      startAutoCapture();
+    } else {
+      stopAutoCapture();
+    }
   };
 }
 
@@ -797,6 +814,9 @@ async function startCamera() {
       btnSwitchCamera.style.display = 'inline-block';
     }
     
+    // Start auto-capture monitoring
+    startAutoCapture();
+    
     // Handle camera errors
     cameraVideo.onerror = (e) => {
       console.error('Video error:', e);
@@ -822,6 +842,9 @@ function stopCamera() {
     currentStream.getTracks().forEach(track => track.stop());
     currentStream = null;
   }
+  
+  // Stop auto-capture
+  stopAutoCapture();
   
   // Hide camera interface
   btnStartCamera.style.display = 'inline-block';
@@ -873,6 +896,88 @@ function switchCamera() {
   
   currentCameraIndex = (currentCameraIndex + 1) % availableCameras.length;
   startCamera();
+}
+
+// Auto-capture functionality
+let autoCaptureInterval = null;
+
+function startAutoCapture() {
+  if (!autoCaptureEnabled) return;
+  
+  // Check for good focus every 500ms
+  autoCaptureInterval = setInterval(() => {
+    if (currentStream && cameraVideo.readyState >= 2) {
+      checkFocusAndCapture();
+    }
+  }, 500);
+}
+
+function stopAutoCapture() {
+  if (autoCaptureInterval) {
+    clearInterval(autoCaptureInterval);
+    autoCaptureInterval = null;
+  }
+}
+
+function checkFocusAndCapture() {
+  const now = Date.now();
+  if (now - lastCaptureTime < captureCooldown) return;
+  
+  // Simple focus detection based on image contrast
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 160;
+  canvas.height = 120;
+  
+  ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  
+  // Calculate contrast (simplified focus detection)
+  let contrast = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const brightness = (r + g + b) / 3;
+    contrast += Math.abs(brightness - 128);
+  }
+  contrast = contrast / (data.length / 4);
+  
+  // If contrast is high enough (good focus), capture image
+  if (contrast > 25) {
+    lastCaptureTime = now;
+    captureImage();
+    
+    // Show feedback
+    showCaptureFeedback();
+  }
+}
+
+function showCaptureFeedback() {
+  const feedback = document.createElement('div');
+  feedback.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(16, 185, 129, 0.9);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  `;
+  feedback.innerHTML = '📸 Photo captured!<br><small>Turn bottle for more angles</small>';
+  
+  document.body.appendChild(feedback);
+  
+  setTimeout(() => {
+    document.body.removeChild(feedback);
+  }, 2000);
 }
 
 function updateCapturedImages() {

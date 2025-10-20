@@ -34,13 +34,12 @@ ul.allergies li{background:#fff; border:1px solid #ddd; padding:8px 12px; border
 .scan-frame{width:80%; height:60%; border:3px solid #10b981; border-radius:12px; background:rgba(16,185,129,0.1); position:relative}
 .scan-frame:before{content:''; position:absolute; top:-3px; left:-3px; right:-3px; bottom:-3px; border:1px solid rgba(255,255,255,0.5); border-radius:12px}
 .scan-hint{color:#fff; background:rgba(0,0,0,0.7); padding:8px 16px; border-radius:20px; margin-top:16px; font-size:14px; text-align:center}
-.scan-tips{position:absolute; bottom:80px; left:16px; right:16px; background:rgba(0,0,0,0.8); color:#fff; padding:12px; border-radius:12px; font-size:12px; display:none}
+.scan-tips{position:absolute; top:16px; left:16px; right:16px; background:rgba(0,0,0,0.8); color:#fff; padding:12px; border-radius:12px; font-size:12px; display:block; z-index:10}
 .scan-tips p{margin:0 0 8px 0; font-weight:600}
 .scan-tips ul{margin:0; padding-left:16px; list-style:none}
 .scan-tips li{margin:4px 0; position:relative}
 .scan-tips li:before{content:"✓"; color:#10b981; margin-right:8px; font-weight:bold}
-.camera-preview:hover .scan-tips{display:block}
-.camera-buttons{display:flex; gap:12px; justify-content:center; margin-top:16px; padding:16px}
+.camera-buttons{display:flex; gap:12px; justify-content:center; margin-top:16px; padding:16px; position:sticky; bottom:0; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-top:1px solid #e9ecef}
 .captured-images{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:12px; margin-top:16px}
 .captured-image{position:relative; border-radius:8px; overflow:hidden; background:#f8f9fa; border:2px solid #e9ecef}
 .captured-image img{width:100%; height:120px; object-fit:cover; display:block}
