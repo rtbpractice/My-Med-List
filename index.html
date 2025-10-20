@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyMedList v2</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MyMedList">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>MyMedList <span class="ver">v2</span></h1>
+    <nav>
+      <button id="tab-scan" class="active">📋 Scan Label</button>
+      <button id="tab-meds">💊 My Meds</button>
+      <button id="btn-print" title="Print or Save as PDF">🖨️ Print/Share</button>
+    </nav>
+  </header>
+
+  <main id="view-scan">
+        <section class="panel">
+          <h2>Scan prescription label</h2>
+          
+          <!-- Camera Section -->
+          <div id="camera-section" class="camera-section">
+            <div class="camera-controls">
+              <button id="btn-start-camera" class="primary">📷 Scan with Camera</button>
+              <button id="btn-stop-camera" class="secondary" style="display:none;">Stop Camera</button>
+            </div>
+            <div id="camera-preview" class="camera-preview" style="display:none;">
+              <video id="camera-video" autoplay muted playsinline></video>
+              <canvas id="camera-canvas" style="display:none;"></canvas>
+              <div class="camera-overlay">
+                <div class="scan-frame"></div>
+                <p class="scan-hint">Position label within frame</p>
+                <div class="scan-tips">
+                  <p>📱 Tips for better scanning:</p>
+                  <ul>
+                    <li>Hold phone steady</li>
+                    <li>Good lighting</li>
+                    <li>Label flat and straight</li>
+                    <li>Fill the frame</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="camera-buttons">
+                <button id="btn-capture" class="primary">📸 Take Photo</button>
+                <button id="btn-switch-camera" class="secondary">🔄 Switch Camera</button>
+              </div>
+            </div>
+            <div id="captured-images" class="captured-images"></div>
+          </div>
+          
+          <!-- File Upload Section -->
+          <div class="upload-section">
+            <h3>Or upload photos</h3>
+            <input type="file" id="file-input" accept="image/*" multiple>
+            <p class="hint">Tip: Upload multiple photos of the label (front, back, barcode, etc.) for best results.</p>
+            <div id="file-list" class="file-list"></div>
+            <div class="upload-actions">
+              <button id="btn-smart-scan" class="primary">📁 Read Files</button>
+            </div>
+          </div>
+          
+          <!-- Text Input -->
+          <div class="text-section">
+            <h3>Or paste text</h3>
+            <textarea id="raw-text" rows="6" placeholder="Or paste label text here"></textarea>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <div class="row">
+              <button id="btn-parse">📝 Process Text</button>
+            </div>
+          </div>
+          
+          <pre id="ocr-output" class="mono"></pre>
+        </section>
+
+    <section class="panel">
+      <h2>Review parsed fields</h2>
+      <div class="grid">
+        <label>Drug (generic/brand)<input id="fld-drug"></label>
+        <label>Strength<input id="fld-strength"></label>
+        <label>Directions / SIG<textarea id="fld-sig" rows="2"></textarea></label>
+        <label>Indication (what for?)<input id="fld-indication"></label>
+        <label>Rx #<input id="fld-rxnum"></label>
+        <label>Refills remaining<input id="fld-refills" type="number"></label>
+        <label>Last fill date<input id="fld-filldate"></label>
+        <label>Days’ supply<input id="fld-days" type="number"></label>
+        <label>Prescriber<input id="fld-prescriber"></label>
+        <label>Pharmacy<input id="fld-pharmacy"></label>
+        <label>Pharmacy phone<input id="fld-pharmphone"></label>
+        <label>Pill photo<input id="fld-photo" type="file" accept="image/*"></label>
+      </div>
+      <button id="btn-add" class="primary">Add to My Meds</button>
+      <div id="add-msg"></div>
+    </section>
+  </main>
+
+  <main id="view-meds" class="hidden">
+    <section class="panel">
+      <h2>Your Medications</h2>
+      <div id="med-list"></div>
+      <button id="btn-clear" class="danger">Clear All Meds</button>
+    </section>
+
+    <section class="panel">
+      <h2>My Allergies</h2>
+      <div class="row">
+        <input id="allergy-input" placeholder="e.g., Penicillin, Latex" />
+        <button id="allergy-add" class="primary">Add Allergy</button>
+      </div>
+      <ul id="allergy-list" class="allergies"></ul>
+      <button id="allergy-clear" class="danger">Clear Allergies</button>
+    </section>
+  </main>
+
+  <footer>
+    <small>Local prototype. Not medical advice. Data saves only in this browser.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

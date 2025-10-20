@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create App Icons</title>
+</head>
+<body>
+    <h1>MyMedList App Icons</h1>
+    <p>This page will help you create the app icons needed for your PWA.</p>
+    
+    <canvas id="icon192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="icon512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    
+    <script>
+        function createIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(0, 0, size, size);
+            
+            // White circle
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/3, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Pill icon
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(size/2 - size/8, size/2 - size/12, size/4, size/6);
+            ctx.beginPath();
+            ctx.arc(size/2 - size/8, size/2, size/12, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size/2 + size/8, size/2, size/12, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${size/12}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillText('MyMedList', size/2, size - size/8);
+        }
+        
+        createIcon('icon192', 192);
+        createIcon('icon512', 512);
+        
+        // Download functions
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Add download buttons
+        document.body.innerHTML += '<br><button onclick="downloadIcon(\'icon192\', \'icon-192.png\')">Download 192x192 Icon</button>';
+        document.body.innerHTML += '<button onclick="downloadIcon(\'icon512\', \'icon-512.png\')">Download 512x512 Icon</button>';
+    </script>
+</body>
+</html>
