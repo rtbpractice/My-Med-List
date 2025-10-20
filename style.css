@@ -7,7 +7,7 @@ nav button.active{background:#3b82f6; color:#fff}
 main{max-width:900px; margin:16px auto; padding:0 12px}
 .panel{background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:16px; margin-bottom:16px}
 .hint{color:#666; font-size:13px}
-.mono{background:#fff3cd; color:#856404; padding:10px; border-radius:8px; white-space:pre-wrap; border:2px solid #ffc107; font-family:monospace; font-size:12px; font-weight:bold}
+.mono{display:none!important}
 .status-message{background:#e7f3ff; color:#0066cc; padding:15px; border-radius:10px; border:2px solid #0066cc; font-size:16px; font-weight:600; text-align:center; margin:10px 0}
 .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
 label{display:flex; flex-direction:column; font-size:13px}
