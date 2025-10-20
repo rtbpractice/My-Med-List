@@ -7,7 +7,7 @@ nav button.active{background:#3b82f6; color:#fff}
 main{max-width:900px; margin:16px auto; padding:0 12px}
 .panel{background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:16px; margin-bottom:16px}
 .hint{color:#666; font-size:13px}
-.mono{background:#0b1020; color:#c6e1ff; padding:10px; border-radius:8px; white-space:pre-wrap}
+.mono{background:#f8f9fa; color:#333; padding:10px; border-radius:8px; white-space:pre-wrap; border:1px solid #e9ecef; font-family:monospace; font-size:12px}
 .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
 label{display:flex; flex-direction:column; font-size:13px}
 input,textarea{margin-top:6px; padding:10px 12px; border:1px solid #ccc; border-radius:8px}

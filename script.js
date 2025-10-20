@@ -1021,23 +1021,33 @@ if (btnSmartScan) {
       console.log('Barcode data:', window.lastBarcodeData);
     }
     
-    // Parse the combined results
-    if (allResults.combinedText.trim()) {
-      out.textContent += '\n=== PARSING RESULTS ===\n';
-      parseToFields(allResults.combinedText);
-      
-      // Check if we got meaningful results
-      const drugField = document.getElementById('fld-drug');
-      const strengthField = document.getElementById('fld-strength');
-      const sigField = document.getElementById('fld-sig');
-      
-      if (drugField && drugField.value && drugField.value.length > 3 && 
-          strengthField && strengthField.value && strengthField.value.length > 1) {
-        out.textContent += 'Fields have been auto-filled based on all scanned data.\n';
-      } else {
-        out.textContent += 'Partial data extracted. Please review and complete manually.\n';
-        out.textContent += 'Tip: Try taking clearer photos or use manual entry.\n';
-      }
+  // Parse the combined results
+  if (allResults.combinedText.trim()) {
+    out.textContent += '\n=== PARSING RESULTS ===\n';
+    parseToFields(allResults.combinedText);
+    
+    // Check if we got meaningful results
+    const drugField = document.getElementById('fld-drug');
+    const strengthField = document.getElementById('fld-strength');
+    const sigField = document.getElementById('fld-sig');
+    const rxField = document.getElementById('fld-rxnum');
+    const pharmacyField = document.getElementById('fld-pharmacy');
+    
+    // Debug: show what fields were filled
+    out.textContent += `\nFields filled:\n`;
+    out.textContent += `Drug: ${drugField ? drugField.value : 'NOT FOUND'}\n`;
+    out.textContent += `Strength: ${strengthField ? strengthField.value : 'NOT FOUND'}\n`;
+    out.textContent += `Directions: ${sigField ? sigField.value : 'NOT FOUND'}\n`;
+    out.textContent += `Rx#: ${rxField ? rxField.value : 'NOT FOUND'}\n`;
+    out.textContent += `Pharmacy: ${pharmacyField ? pharmacyField.value : 'NOT FOUND'}\n`;
+    
+    if (drugField && drugField.value && drugField.value.length > 3 && 
+        strengthField && strengthField.value && strengthField.value.length > 1) {
+      out.textContent += '\n✅ Fields have been auto-filled based on all scanned data.\n';
+    } else {
+      out.textContent += '\n⚠️ Partial data extracted. Please review and complete manually.\n';
+      out.textContent += 'Tip: Try taking clearer photos or use manual entry.\n';
+    }
     } else if (allResults.barcodes.length > 0) {
       // If no OCR text but we have barcodes, try to use barcode data
       out.textContent += '\n=== USING BARCODE DATA ===\n';
@@ -1377,13 +1387,37 @@ function parseToFields(txt) {
   }
 
   // Enhanced pharmacy detection (including OCR variations)
+  let pharmacyName = '';
+  let pharmacyAddress = '';
+  
+  // Try to match pharmacy with full address
   const pharmacyMatch = txt.match(/([A-Za-z\s]+(?:Pharmacy|Phage|Drug|Pharm|Store))\s*[^\n]*\n?[^\n]*(\d+\s+[A-Za-z\s]+(?:Road|Street|Ave|Avenue|Blvd|Boulevard|Dr|Drive))/i);
   if (pharmacyMatch) {
-    let pharmacyName = pharmacyMatch[1].trim();
-    // Fix common OCR errors
+    pharmacyName = pharmacyMatch[1].trim();
+    pharmacyAddress = pharmacyMatch[2].trim();
+  } else {
+    // Fallback: try to find CVS Pharmacy with address
+    const cvsMatch = txt.match(/(CVS\s+Pharmacy)[^\n]*\n?[^\n]*(\d+\s+[A-Za-z\s]+(?:Road|Street|Ave|Avenue|Blvd|Boulevard|Dr|Drive))/i);
+    if (cvsMatch) {
+      pharmacyName = cvsMatch[1].trim();
+      pharmacyAddress = cvsMatch[2].trim();
+    } else {
+      // Simple pharmacy name fallback
+      const simplePharmacy = match1(/(?:Pharmacy|Walgreens|CVS|Walmart|Rite Aid|Fallston)[^\n]*/i, txt);
+      if (simplePharmacy) {
+        pharmacyName = simplePharmacy.trim();
+      }
+    }
+  }
+  
+  // Fix common OCR errors and set the pharmacy field
+  if (pharmacyName) {
     pharmacyName = pharmacyName.replace(/Phage/g, 'Pharmacy');
-    const pharmacyAddress = pharmacyMatch[2].trim();
-    setVal('fld-pharmacy', `${pharmacyName}, ${pharmacyAddress}`);
+    if (pharmacyAddress) {
+      setVal('fld-pharmacy', `${pharmacyName}, ${pharmacyAddress}`);
+    } else {
+      setVal('fld-pharmacy', pharmacyName);
+    }
   }
 
   // Better drug name and strength extraction
