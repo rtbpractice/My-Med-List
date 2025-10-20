@@ -42,7 +42,12 @@ ul.allergies li{background:#fff; border:1px solid #ddd; padding:8px 12px; border
 .camera-preview{position:relative; max-width:100%; max-height:50vh; margin:12px 0; border-radius:12px; overflow:hidden; background:#000}
 .camera-preview video{width:100%; height:auto; display:block; max-height:50vh; object-fit:cover}
 .camera-overlay{position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; display:flex; flex-direction:column; justify-content:center; align-items:center}
-.scan-frame{width:80%; height:60%; border:3px solid #10b981; border-radius:12px; background:rgba(16,185,129,0.1); position:relative}
+.camera-controls-overlay{position:absolute; top:16px; right:16px; display:flex; gap:8px; pointer-events:auto}
+button.camera-capture-overlay{background:#10b981; color:#fff; border:0; padding:12px; border-radius:50%; cursor:pointer; font-weight:600; font-size:20px; box-shadow:0 4px 12px rgba(16,185,129,0.4); transition:all 0.2s ease; width:50px; height:50px; display:flex; align-items:center; justify-content:center}
+button.camera-capture-overlay:hover{background:#059669; transform:scale(1.1); box-shadow:0 6px 16px rgba(16,185,129,0.6)}
+button.camera-stop-overlay{background:#ef4444; color:#fff; border:0; padding:12px; border-radius:50%; cursor:pointer; font-weight:600; font-size:20px; box-shadow:0 4px 12px rgba(239,68,68,0.4); transition:all 0.2s ease; width:50px; height:50px; display:flex; align-items:center; justify-content:center}
+button.camera-stop-overlay:hover{background:#dc2626; transform:scale(1.1); box-shadow:0 6px 16px rgba(239,68,68,0.6)}
+.scan-frame{width:80%; height:60%; border:3px solid #10b981; border-radius:12px; background:rgba(16,185,129,0.1); position:relative; margin-top:-20%}
 .scan-frame:before{content:''; position:absolute; top:-3px; left:-3px; right:-3px; bottom:-3px; border:1px solid rgba(255,255,255,0.5); border-radius:12px}
 .scan-hint{color:#fff; background:rgba(0,0,0,0.7); padding:8px 16px; border-radius:20px; margin-top:16px; font-size:14px; text-align:center}
 .scan-tips{position:absolute; top:16px; left:16px; right:16px; background:rgba(0,0,0,0.8); color:#fff; padding:12px; border-radius:12px; font-size:12px; display:block; z-index:10}

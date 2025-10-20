@@ -706,6 +706,7 @@ let captureCooldown = 2000; // 2 seconds between captures
 const btnStartCamera = document.getElementById('btn-start-camera');
 const btnStopCamera = document.getElementById('btn-stop-camera');
 const btnCapture = document.getElementById('btn-capture');
+const btnStopCameraOverlay = document.getElementById('btn-stop-camera-overlay');
 const btnSwitchCamera = document.getElementById('btn-switch-camera');
 const btnToggleAuto = document.getElementById('btn-toggle-auto');
 const cameraPreview = document.getElementById('camera-preview');
@@ -735,6 +736,12 @@ if (btnStartCamera) {
 
 if (btnStopCamera) {
   btnStopCamera.onclick = () => {
+    stopCamera();
+  };
+}
+
+if (btnStopCameraOverlay) {
+  btnStopCameraOverlay.onclick = () => {
     stopCamera();
   };
 }
@@ -807,6 +814,7 @@ async function startCamera() {
     // Show camera interface
     btnStartCamera.style.display = 'none';
     btnStopCamera.style.display = 'inline-block';
+    if (btnStopCameraOverlay) btnStopCameraOverlay.style.display = 'flex';
     cameraPreview.style.display = 'block';
     
     // Show switch button only if multiple cameras
@@ -849,6 +857,7 @@ function stopCamera() {
   // Hide camera interface
   btnStartCamera.style.display = 'inline-block';
   btnStopCamera.style.display = 'none';
+  if (btnStopCameraOverlay) btnStopCameraOverlay.style.display = 'none';
   cameraPreview.style.display = 'none';
   btnSwitchCamera.style.display = 'none';
 }
