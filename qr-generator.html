@@ -26,7 +26,7 @@
     <div class="qr-container">
         <h3>Scan this QR code with your phone:</h3>
         <canvas id="qrcode"></canvas>
-        <p><strong>App URL:</strong> <span id="app-url">https://your-app-name.netlify.app</span></p>
+        <p><strong>App URL:</strong> <input type="text" id="app-url" value="https://subtle-klepon-519f70.netlify.app" style="width: 300px; padding: 5px; margin: 5px;"></p>
         <button onclick="updateQR()">Update QR Code</button>
     </div>
     
@@ -54,12 +54,12 @@
         }
         
         function updateQR() {
-            const url = document.getElementById('app-url').textContent;
+            const url = document.getElementById('app-url').value;
             generateQR(url);
         }
         
         // Generate initial QR code
-        generateQR('https://your-app-name.netlify.app');
+        generateQR('https://subtle-klepon-519f70.netlify.app');
     </script>
 </body>
 </html>
