@@ -7,18 +7,18 @@ nav button.active{background:#3b82f6; color:#fff}
 main{max-width:900px; margin:16px auto; padding:0 12px}
 .panel{background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:16px; margin-bottom:16px}
 .hint{color:#666; font-size:13px}
-.mono{background:#f8f9fa; color:#333; padding:10px; border-radius:8px; white-space:pre-wrap; border:1px solid #e9ecef; font-family:monospace; font-size:12px}
+.mono{background:#fff3cd; color:#856404; padding:10px; border-radius:8px; white-space:pre-wrap; border:2px solid #ffc107; font-family:monospace; font-size:12px; font-weight:bold}
 .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
 label{display:flex; flex-direction:column; font-size:13px}
 input,textarea{margin-top:6px; padding:10px 12px; border:1px solid #ccc; border-radius:8px}
 button.primary{background:#10b981; color:#fff; border:0; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600}
 button.secondary{background:#6b7280; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:13px}
-button.camera-start{background:#10b981; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.2s ease}
-button.camera-start:hover{background:#059669; transform:translateY(-1px); box-shadow:0 4px 12px rgba(16,185,129,0.4)}
-button.camera-stop{background:#ef4444; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(239,68,68,0.3); transition:all 0.2s ease}
-button.camera-stop:hover{background:#dc2626; transform:translateY(-1px); box-shadow:0 4px 12px rgba(239,68,68,0.4)}
-button.camera-capture{background:#3b82f6; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(59,130,246,0.3); transition:all 0.2s ease; flex:1; min-width:120px}
-button.camera-capture:hover{background:#2563eb; transform:translateY(-1px); box-shadow:0 4px 10px rgba(59,130,246,0.4)}
+button.camera-start{background:#00ff00; color:#000; border:3px solid #000; padding:20px 30px; border-radius:20px; cursor:pointer; font-weight:900; font-size:24px; box-shadow:0 4px 15px rgba(0,255,0,0.8); transition:all 0.2s ease}
+button.camera-start:hover{background:#00cc00; transform:scale(1.1); box-shadow:0 6px 20px rgba(0,255,0,1)}
+button.camera-stop{background:#ff0000; color:#fff; border:3px solid #000; padding:20px 30px; border-radius:20px; cursor:pointer; font-weight:900; font-size:24px; box-shadow:0 4px 15px rgba(255,0,0,0.8); transition:all 0.2s ease}
+button.camera-stop:hover{background:#cc0000; transform:scale(1.1); box-shadow:0 6px 20px rgba(255,0,0,1)}
+button.camera-capture{background:#0000ff; color:#fff; border:3px solid #000; padding:15px 25px; border-radius:15px; cursor:pointer; font-weight:900; font-size:20px; box-shadow:0 4px 15px rgba(0,0,255,0.8); transition:all 0.2s ease; flex:2; min-width:200px}
+button.camera-capture:hover{background:#0000cc; transform:scale(1.1); box-shadow:0 6px 20px rgba(0,0,255,1)}
 button.camera-switch{background:#8b5cf6; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:12px; box-shadow:0 2px 4px rgba(139,92,246,0.3); transition:all 0.2s ease; flex:1; min-width:100px}
 button.camera-switch:hover{background:#7c3aed; transform:translateY(-1px); box-shadow:0 4px 8px rgba(139,92,246,0.4)}
 button.camera-auto{background:#f59e0b; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:12px; box-shadow:0 2px 4px rgba(245,158,11,0.3); transition:all 0.2s ease; flex:1; min-width:100px}

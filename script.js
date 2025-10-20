@@ -1139,12 +1139,13 @@ if (btnSmartScan) {
     const pharmacyField = document.getElementById('fld-pharmacy');
     
     // Debug: show what fields were filled
-    out.textContent += `\nFields filled:\n`;
-    out.textContent += `Drug: ${drugField ? drugField.value : 'NOT FOUND'}\n`;
-    out.textContent += `Strength: ${strengthField ? strengthField.value : 'NOT FOUND'}\n`;
-    out.textContent += `Directions: ${sigField ? sigField.value : 'NOT FOUND'}\n`;
-    out.textContent += `Rx#: ${rxField ? rxField.value : 'NOT FOUND'}\n`;
-    out.textContent += `Pharmacy: ${pharmacyField ? pharmacyField.value : 'NOT FOUND'}\n`;
+    out.textContent += `\n🔍 DEBUG - Fields filled:\n`;
+    out.textContent += `Drug: ${drugField ? drugField.value : '❌ NOT FOUND'}\n`;
+    out.textContent += `Strength: ${strengthField ? strengthField.value : '❌ NOT FOUND'}\n`;
+    out.textContent += `Directions: ${sigField ? sigField.value : '❌ NOT FOUND'}\n`;
+    out.textContent += `Rx#: ${rxField ? rxField.value : '❌ NOT FOUND'}\n`;
+    out.textContent += `Pharmacy: ${pharmacyField ? pharmacyField.value : '❌ NOT FOUND'}\n`;
+    out.textContent += `\n📝 Raw OCR Text (first 200 chars):\n${allResults.combinedText.substring(0, 200)}...\n`;
     
     if (drugField && drugField.value && drugField.value.length > 3 && 
         strengthField && strengthField.value && strengthField.value.length > 1) {
