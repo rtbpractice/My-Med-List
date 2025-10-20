@@ -17,12 +17,12 @@ button.camera-start{background:#10b981; color:#fff; border:0; padding:12px 20px;
 button.camera-start:hover{background:#059669; transform:translateY(-1px); box-shadow:0 4px 12px rgba(16,185,129,0.4)}
 button.camera-stop{background:#ef4444; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(239,68,68,0.3); transition:all 0.2s ease}
 button.camera-stop:hover{background:#dc2626; transform:translateY(-1px); box-shadow:0 4px 12px rgba(239,68,68,0.4)}
-button.camera-capture{background:#3b82f6; color:#fff; border:0; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:16px; box-shadow:0 2px 8px rgba(59,130,246,0.3); transition:all 0.2s ease}
-button.camera-capture:hover{background:#2563eb; transform:translateY(-1px); box-shadow:0 4px 12px rgba(59,130,246,0.4)}
-button.camera-switch{background:#8b5cf6; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(139,92,246,0.3); transition:all 0.2s ease}
-button.camera-switch:hover{background:#7c3aed; transform:translateY(-1px); box-shadow:0 4px 10px rgba(139,92,246,0.4)}
-button.camera-auto{background:#f59e0b; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(245,158,11,0.3); transition:all 0.2s ease}
-button.camera-auto:hover{background:#d97706; transform:translateY(-1px); box-shadow:0 4px 10px rgba(245,158,11,0.4)}
+button.camera-capture{background:#3b82f6; color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:14px; box-shadow:0 2px 6px rgba(59,130,246,0.3); transition:all 0.2s ease; flex:1; min-width:120px}
+button.camera-capture:hover{background:#2563eb; transform:translateY(-1px); box-shadow:0 4px 10px rgba(59,130,246,0.4)}
+button.camera-switch{background:#8b5cf6; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:12px; box-shadow:0 2px 4px rgba(139,92,246,0.3); transition:all 0.2s ease; flex:1; min-width:100px}
+button.camera-switch:hover{background:#7c3aed; transform:translateY(-1px); box-shadow:0 4px 8px rgba(139,92,246,0.4)}
+button.camera-auto{background:#f59e0b; color:#fff; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:12px; box-shadow:0 2px 4px rgba(245,158,11,0.3); transition:all 0.2s ease; flex:1; min-width:100px}
+button.camera-auto:hover{background:#d97706; transform:translateY(-1px); box-shadow:0 4px 8px rgba(245,158,11,0.4)}
 button.danger{background:#ef4444; color:#fff; border:0; padding:10px 14px; border-radius:10px; cursor:pointer}
 .hidden{display:none}
 .card{border:1px solid #ddd; border-radius:12px; padding:12px; margin:10px 0; background:#fff}
@@ -38,8 +38,8 @@ ul.allergies li{background:#fff; border:1px solid #ddd; padding:8px 12px; border
 /* Camera and Mobile Styles */
 .camera-section{margin:16px 0; padding:16px; background:#f8f9fa; border-radius:12px; border:1px solid #e9ecef}
 .camera-controls{margin-bottom:16px; text-align:center}
-.camera-preview{position:relative; max-width:100%; margin:16px 0; border-radius:12px; overflow:hidden; background:#000}
-.camera-preview video{width:100%; height:auto; display:block}
+.camera-preview{position:relative; max-width:100%; max-height:60vh; margin:16px 0; border-radius:12px; overflow:hidden; background:#000}
+.camera-preview video{width:100%; height:auto; display:block; max-height:60vh; object-fit:cover}
 .camera-overlay{position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; display:flex; flex-direction:column; justify-content:center; align-items:center}
 .scan-frame{width:80%; height:60%; border:3px solid #10b981; border-radius:12px; background:rgba(16,185,129,0.1); position:relative}
 .scan-frame:before{content:''; position:absolute; top:-3px; left:-3px; right:-3px; bottom:-3px; border:1px solid rgba(255,255,255,0.5); border-radius:12px}
@@ -49,8 +49,8 @@ ul.allergies li{background:#fff; border:1px solid #ddd; padding:8px 12px; border
 .scan-tips ul{margin:0; padding-left:16px; list-style:none}
 .scan-tips li{margin:4px 0; position:relative}
 .scan-tips li:before{content:"✓"; color:#10b981; margin-right:8px; font-weight:bold}
-.camera-buttons{display:flex; gap:12px; justify-content:center; margin-top:16px; padding:16px; position:sticky; bottom:0; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-top:1px solid #e9ecef}
-.captured-images{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:12px; margin-top:16px}
+.camera-buttons{display:flex; gap:8px; justify-content:center; margin-top:12px; padding:12px; flex-wrap:wrap}
+.captured-images{display:grid; grid-template-columns:repeat(auto-fit, minmax(80px, 1fr)); gap:8px; margin-top:12px; max-height:200px; overflow-y:auto}
 .captured-image{position:relative; border-radius:8px; overflow:hidden; background:#f8f9fa; border:2px solid #e9ecef}
 .captured-image img{width:100%; height:120px; object-fit:cover; display:block}
 .captured-image .remove-btn{position:absolute; top:4px; right:4px; background:rgba(239,68,68,0.9); color:#fff; border:none; border-radius:50%; width:24px; height:24px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center}
@@ -66,8 +66,9 @@ ul.allergies li{background:#fff; border:1px solid #ddd; padding:8px 12px; border
   .row{flex-direction:column; gap:8px}
   .row button{width:100%; padding:12px 16px; font-size:16px}
   .camera-preview{margin:12px 0}
-  .camera-buttons{flex-direction:column; gap:8px}
-  .camera-buttons button{width:100%; padding:12px 16px; font-size:16px}
+  .camera-buttons{flex-direction:row; gap:6px; flex-wrap:wrap; justify-content:center}
+  .camera-buttons button{flex:1; min-width:100px; padding:10px 12px; font-size:14px}
+  .camera-buttons .camera-capture{min-width:140px; font-size:16px}
   .captured-images{grid-template-columns:repeat(auto-fit, minmax(100px, 1fr)); gap:8px}
   .scan-frame{width:90%; height:50%}
   .scan-hint{font-size:12px; padding:6px 12px}
